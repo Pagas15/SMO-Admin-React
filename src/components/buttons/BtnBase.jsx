@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-const BtnBase = React.forwardRef(({children, onClick, theme, type = 'btn', ...props}, ref) => {
+const BtnBase = React.forwardRef(({children, onClick, theme, type = 'btn', href, ...props}, ref) => {
 	const classBtn = (typeBtn) => {
 		switch (typeBtn) {
 			case 'dark':
@@ -18,17 +18,24 @@ const BtnBase = React.forwardRef(({children, onClick, theme, type = 'btn', ...pr
 	}
 	
 	const btn = type === 'btn' ?
-	<button 
-		className={classNames("btn", classBtn(theme))} 
-		onClick={onClick} 
-		ref={ref} 
-		{...props}
-	>{children}</button>
-	: <input 
-		type="submit" 
-		className={classNames("btn", classBtn(theme))} 
-		value={children} 
-	/>
+		<button 
+			className={classNames("btn", classBtn(theme))} 
+			onClick={onClick} 
+			ref={ref} 
+			{...props}
+		>{children}</button> : 
+		type === 'link' ? 
+		<a href={href}
+			className={classNames("btn", classBtn(theme))} 
+			onClick={onClick} 
+			ref={ref} 
+			{...props}
+		>{children}</a>
+		: <input 
+			type="submit" 
+			className={classNames("btn", classBtn(theme))} 
+			value={children} 
+		/>
 	
 	return btn
 })

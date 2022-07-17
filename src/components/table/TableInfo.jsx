@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ReactPaginate from 'react-paginate';
 import Loader from '../decorateElemetn/Loader';
 import { Icon } from '../Icon/Icon';
