@@ -1,35 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import BtnBase from '../buttons/BtnBase';
+import Loader from '../decorateElemetn/Loader';
 
-const ListPeople = ({items}) => {
-	const [currentItems, setCurrentItems] = useState(null);
-	const [pageCount, setPageCount] = useState(0);
-	const [itemOffset, setItemOffset] = useState(0)
+const ListPeople = ({items, activePage, setActivePage, totalPage}) => {
 	
-	const ITEMS_PER_PAGE = 9;
-
-	useEffect(()=>{
-		const endOffset = itemOffset + ITEMS_PER_PAGE;
-		setCurrentItems(items.slice(itemOffset, endOffset))
-		setPageCount(Math.ceil(items.length / ITEMS_PER_PAGE));
-	}, [itemOffset, ITEMS_PER_PAGE])
-
 	const handlePageClick = (event) => {
-		const newOffset = (event.selected * ITEMS_PER_PAGE);
-		setItemOffset(newOffset)
+		setActivePage(event.selected + 1);
 	}
 
-
-	const listItems = currentItems && currentItems.map(item => {
+	const listItems = items && items.map(item => {
 		return <li className="cartInt" key={item.id}>
-			<div className="cartInt__img">
-				<img src={item.img} alt="" />
-			</div>
+			{(item?.image) && <div className="cartInt__img">
+				<img src={item.image} alt="" />
+			</div>}
 			<div className="cartInt__cnt">
 				<h4 className="cartInt__title txt14x18 cDr">{item.name}</h4>
 				<div className="cartInt__assets txt12x14"><span className='cWGry'>Assets:</span> <span className='w700 cDr'>{item.assets}</span></div>
-				<BtnBase theme="lite" >Visit Profile</BtnBase>
+				<BtnBase theme="lite">Visit Profile</BtnBase>
 			</div>
 		</li>
 	})
@@ -37,16 +25,16 @@ const ListPeople = ({items}) => {
 	return (
 		<div className='block'>
 			<ul className="listPeople">
-				{listItems}
+				{items.length >= 1 ? listItems : <div className='blockCenter'><Loader /></div>}
 			</ul>
 			<ReactPaginate
 				breakLabel="..."
 				previousLabel="Previous"
 				nextLabel="Next"
 				pageRangeDisplayed={4}
-				renderOnZeroPageCount={null}
+				renderOnZeroPageCount={activePage}
 				onPageChange={handlePageClick}
-				pageCount={pageCount}
+				pageCount={totalPage}
 				className="pagination"
 			/>
 		</div>

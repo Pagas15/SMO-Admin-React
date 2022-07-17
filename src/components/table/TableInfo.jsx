@@ -1,35 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
+import Loader from '../decorateElemetn/Loader';
 import { Icon } from '../Icon/Icon';
 
 import Items from './Items'
 
-const TableInfo = ({selectItems, setSelectItems, items}) => {
-	const [currentItems, setCurrentItems] = useState(null);
-	const [pageCount, setPageCount] = useState(0);
-	const [itemOffset, setItemOffset] = useState(0)
+const TableInfo = ({selectItems, setSelectItems, tableInfo, totalPages, setActivePage, activePage}) => {
 
-	const ITEMS_PER_PAGE = 10;
-
-	const fullListKeys = items.map(item => item.id);
+	const fullListKeys = () => tableInfo.items?.map(item => item.id);
 	
-	useEffect(()=>{
-		const endOffset = itemOffset + ITEMS_PER_PAGE;
-		setCurrentItems(items.slice(itemOffset, endOffset))
-		setPageCount(Math.ceil(items.length / ITEMS_PER_PAGE));
-		// console.log('wtf');
-	}, [itemOffset, ITEMS_PER_PAGE])
-
-	console.log(itemOffset);
-
 	const handlePageClick = (event) => {
-		const newOffset = (event.selected * ITEMS_PER_PAGE);
-		setItemOffset(newOffset)
+		setActivePage(event.selected + 1);
 	}
 
 	const onSelectOll = () => {
 		selectItems === 'oll' ? setSelectItems(null) : setSelectItems('oll');
 	}
+
+
+	const keysTableInfoHeaders = Object.keys(tableInfo.headers);
+	
+	const listHeader = keysTableInfoHeaders.map(key => {
+		return <td className='txt12z14 w700 cWGry' key={key}>{tableInfo.headers[key]}</td>
+	})
 
 	return (
 		<>
@@ -42,20 +35,18 @@ const TableInfo = ({selectItems, setSelectItems, items}) => {
 								<div><Icon type="check" /></div>
 							</label>
 						</td>
-						<td className="txt12x14 w700 cWGry">Country</td>
-						<td className="txt12x14 w700 cWGry">Owner Name</td>
-						<td className="txt12x14 w700 cWGry">Bank Name</td>
-						<td className="txt12x14 w700 cWGry">Account Number</td>
+						{listHeader}
 						<td></td>
           </tr>
 				</thead>
 				<tbody className="tableInfo__content">
-					<Items 
-						currentItems={currentItems} 
+					{tableInfo.items ? <Items 
+						typeColum={keysTableInfoHeaders}
+						currentItems={tableInfo.items} 
 						listActive={selectItems} 
 						setListActive={setSelectItems}
 						fullListKeys={fullListKeys} 
-					/>
+					/> : <tr><td><Loader /></td></tr>}
 				</tbody>
 			</table>
 			<ReactPaginate
@@ -63,9 +54,9 @@ const TableInfo = ({selectItems, setSelectItems, items}) => {
 				previousLabel="Previous"
 				nextLabel="Next"
 				pageRangeDisplayed={4}
-				renderOnZeroPageCount={null}
+				renderOnZeroPageCount={activePage}
 				onPageChange={handlePageClick}
-				pageCount={pageCount}
+				pageCount={totalPages}
 				className="pagination"
 			/>
 		</>

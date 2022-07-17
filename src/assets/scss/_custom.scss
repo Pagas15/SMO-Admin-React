@@ -130,6 +130,11 @@
 			}
 		}
 	}
+	&__selector{
+		.inputSelect{
+			width: auto;
+		}
+	}
 }
 
 .pagination{
@@ -171,6 +176,7 @@
 		line-height: 17px;
 		color: #8B8D98;
 		height: 52px;
+		width: 120px;
 		&.disabled{
 
 		}
@@ -242,6 +248,9 @@
 		margin-bottom: 0;
 		width: 310px;
 		max-width: 100%;
+	}
+	.inputSelect__input, .inputSelect__list{
+		background: #fff;
 	}
 }
 
