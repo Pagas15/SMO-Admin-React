@@ -18,7 +18,7 @@ const Configuration = () => {
 	const [listOligarchs, setListOligarchs] = useState(false);
 	const [activePage, setActivePage] = useState(0);
 
-	const [addNewPerson, setAddNewPerson] = useState({});
+	const [addNewPerson, setAddNewPerson] = useState({name: '', desctiption: ''});
 
 	const keysListForms = Object.keys(TYPE_FORM_COLECTION);
 

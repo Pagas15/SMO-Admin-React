@@ -4,16 +4,11 @@ import React, {useState} from 'react'
 const Input = ({placeholder, type, required = false, className, valueGet, baseText}) => {
 	const [value, setValue] = useState(baseText || '');
 
-	const onChange = (e) => {
-		setValue(e.target.value)
-		valueGet && valueGet(e.target.value)
-	}
 
 	let inputParam = {
 		type: 'text'
 	}
 
-	let accept;
 
 	switch (type) {
 		case 'tel':
@@ -24,25 +19,47 @@ const Input = ({placeholder, type, required = false, className, valueGet, baseTe
 			break;
 		case 'image':
 			inputParam.type = 'file' 
-			accept = 'image/*' 
+			inputParam.accept = 'image/*' 
 			break;
 		default:
 			inputParam.type = 'text' 
 			break;
 	}
 
+	const classicInput = () => {
+		const onChange = (e) => {
+			setValue(e.target.value)
+			valueGet && valueGet(e.target.value)
+		}
+
+		return <input 
+			className='txt12x14' 
+			type={inputParam.type} 
+			placeholder={placeholder} 
+			required={required}
+			value={value} 
+			onChange={onChange}
+		/>
+	} 
+	const imageInput = () => {
+		const onChangeImage = (e) => {
+			const [file] = e.target.files;
+			
+			setValue(URL.createObjectURL(file))
+			valueGet && valueGet(URL.createObjectURL(file))
+		}
+		return <input 
+			className='txt12x14' 
+			type={inputParam.type} 
+			placeholder={placeholder} 
+			onChange={onChangeImage}
+			multiple
+			accept={inputParam.accept}
+		/>
+	}
 	return (
 		<label className={classNames('inputBox', className)}>
-			<input 
-				className='txt12x14' 
-				type={inputParam.type} 
-				placeholder={placeholder} 
-				required={required}
-				value={value} 
-				onChange={onChange}
-				multiple={type=== 'image' ? true : false}
-				accept={accept}
-			/>
+			{inputParam.type !== 'file' ? classicInput() : imageInput() }
 		</label>
 	)
 }
