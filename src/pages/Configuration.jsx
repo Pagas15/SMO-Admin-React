@@ -11,21 +11,12 @@ import { requestGetByCountry, requestGetCountries, requestGetOligarchs, requestS
 
 const Configuration = () => {
 	const [listCountry, setListCountry] = useState([]);
-	const [filterListSend, setFilterListSend] = useState({
-		// country: '',
-		// inst: '',
-		// instAddress: '',
-		// instEmail: '',
-		// instNumber: '',
-		// contPerson: '',
-		// contEmail: '',
-		// contNumber: '',
-	})
+	const [filterListSend, setFilterListSend] = useState({})
 	const [listForms, setListForms] = useState(false);
 	const [listOligarchs, setListOligarchs] = useState(false);
 	const [activePage, setActivePage] = useState(0);
 
-	const keysListForms = Object.keys(listForms);
+	const keysListForms = Object.keys(TYPE_FORM_COLECTION);
 
 	useEffect(() => {
 		requestGetCountries(setListCountry)
@@ -34,7 +25,7 @@ const Configuration = () => {
 
 	useEffect(() => {
 		if(filterListSend?.country_id){
-			setListForms(true)
+			setListForms(false)
 			requestGetByCountry(filterListSend.country_id, setListForms)
 		}
 		return () => {}
@@ -58,21 +49,29 @@ const Configuration = () => {
 		setFilterListSend({...filterListSend, [indify]: text})
 	}
 	
-	const listArray = keysListForms.map(item => {
-		const itemer = TYPE_FORM_COLECTION[item];
-		const autoText = !!(listForms[item]) ? listForms[item] : '';
-
-		const getInputValue = (value) => {
-			changeInput(item, value)
-		}
-
-		return <InputWrap title={itemer.title} key={item}>
-			<Input type={itemer.type} placeholder={itemer.placeholder} valueGet={getInputValue} baseText={autoText} />
-		</InputWrap>
-	})
+	const listArray = () => {
+		return keysListForms.map(item => {
+			const itemer = TYPE_FORM_COLECTION[item];
+			const autoText = !!(listForms[item]) ? listForms[item] : '';
+			// console.log(autoText);
+	
+			const getInputValue = (value) => {
+				changeInput(item, value)
+			}
+	
+			return <InputWrap title={itemer.title} key={item}>
+				<Input type={itemer.type} placeholder={itemer.placeholder} valueGet={getInputValue} baseText={autoText} />
+			</InputWrap>
+		})
+	}
 
 	const sendSave = () => {
-		requestSaveInstitution(filterListSend, item => {console.log(item)})
+		requestSaveInstitution(filterListSend, item => {
+			console.log(item);
+			(item?.success) ? 
+			alert('Changes saved') : 
+			(window.confirm('Failed, try again?')) &&	sendSave();
+		})
 	}
 
 	return (
@@ -82,7 +81,7 @@ const Configuration = () => {
 					<Selector listSelect={listCountry} activeSelect={filterListSend.country} onChange={changeCountry} placeholder="Choose the county" />
 					<p className="txt12x14 cWGry" style={{marginTop: '12px'}}>It displays all the information according to the selected country above and its email template</p>
 				</InputWrap>
-				{(keysListForms.length >= 1) && <BtnLine 
+				{(listForms) && <BtnLine 
 					style={{marginLeft: 'auto'}}
 					modificatorsClass={['big']}
 					onClick={sendSave}
@@ -91,13 +90,11 @@ const Configuration = () => {
 				</BtnLine>}
 			</div>
 			<InputsWrap >
-			{ (keysListForms.length >= 1) ?	
-				listArray : 
-				(listForms === true) ? 
-				<div className='blockCenter'><Loader /></div>:
-				(listForms === false) ?
-				<div className='blockCenter'><p>Select some country</p></div> :
-				<div className='blockCenter'><p>The list is empty, please select another country</p></div>
+			{ (listForms) ?	
+				listArray() : 
+				filterListSend?.country_id ? 
+				<div className='blockCenter'><Loader /></div> :
+				<div className='blockCenter'><p>Select some country</p></div> 
 			}
 			</InputsWrap>
 			<div className="blockRow">
