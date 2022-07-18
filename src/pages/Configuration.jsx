@@ -3,10 +3,12 @@ import { useEffect } from 'react'
 import BtnLine from '../components/buttons/BtnLine'
 import Loader from '../components/decorateElemetn/Loader'
 import { Icon } from '../components/Icon/Icon'
+import Popup from 'reactjs-popup';
 import { Input, InputsWrap, InputWrap, Selector } from '../components/inputs'
 import ListPeople from '../components/ListPeople'
 import { TYPE_FORM_COLECTION } from '../utils/consts'
 import { requestGetByCountry, requestGetCountries, requestGetOligarchs, requestSaveInstitution } from '../utils/scripts'
+import BtnBase from '../components/buttons/BtnBase'
 
 
 const Configuration = () => {
@@ -15,6 +17,8 @@ const Configuration = () => {
 	const [listForms, setListForms] = useState(false);
 	const [listOligarchs, setListOligarchs] = useState(false);
 	const [activePage, setActivePage] = useState(0);
+
+	const [addNewPerson, setAddNewPerson] = useState({});
 
 	const keysListForms = Object.keys(TYPE_FORM_COLECTION);
 
@@ -43,10 +47,13 @@ const Configuration = () => {
 	}, [listForms])
 
 	const changeCountry = (key) => {
-		setFilterListSend({ country_id: key})
+		setFilterListSend({ country_id: key, ...keysListForms.reduce((obj, i) => ({...obj, [i]: ''}), {})})
 	}
-	const changeInput = (indify, text) => {
-		setFilterListSend({...filterListSend, [indify]: text})
+	const changeInput = (key, text) => {
+		setFilterListSend({...filterListSend, [key]: text})
+	}
+	const changeAddNewPerson = (key, value) => {
+		setAddNewPerson({...addNewPerson, [key]: value })
 	}
 	
 	const listArray = () => {
@@ -74,6 +81,34 @@ const Configuration = () => {
 		})
 	}
 
+	
+	const handleSubmit = (event) => {
+		event.preventDefault();
+		console.log(addNewPerson);
+	}
+
+	const popupAddPersone = <Popup
+		trigger={<BtnLine modificatorsClass={['big', 'icon']} icon={<Icon type="plus" />} > Add new person </BtnLine>}
+		position="center center"
+		modal
+	>
+		<div className="popup__modal">
+			<form className="popup__cnt" onSubmit={handleSubmit}>
+				<p className='txt20x22 w700 mb40'>Enter the mail to which you want to send the report</p>
+				<InputWrap title={'Name'}>
+					<Input type={'text'} placeholder={'Name'} valueGet={value => {changeAddNewPerson('name', value)}} />
+				</InputWrap>
+				<InputWrap title={'Description'}>
+					<Input type={'text'} placeholder={'Description'} valueGet={value => {changeAddNewPerson('description', value)}} />
+				</InputWrap>
+				<InputWrap title={'Image'}>
+					<Input type={'image'} placeholder={'Image'} valueGet={value => {changeAddNewPerson('image', value)}} />
+				</InputWrap>
+				<BtnBase theme="dark" type="input">Add new person</BtnBase>
+			</form>
+		</div>
+	</Popup>
+
 	return (
 		<div>
 			<div className='blockRow'>
@@ -99,12 +134,7 @@ const Configuration = () => {
 			</InputsWrap>
 			<div className="blockRow">
 				<p className='titleM w800'>List of sanctioned people</p>
-				<BtnLine 
-					modificatorsClass={['big', 'icon']}
-					icon={<Icon type="plus" />}
-				>
-					Add new person
-				</BtnLine>
+				{popupAddPersone}
 			</div>
 			{listOligarchs ? <ListPeople 
 				items={listOligarchs.items}

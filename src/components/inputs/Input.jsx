@@ -2,10 +2,10 @@ import classNames from 'classnames';
 import React, {useState} from 'react'
 
 const Input = ({placeholder, type, required = false, className, valueGet, baseText}) => {
-	const [text, setText] = useState(baseText || '');
+	const [value, setValue] = useState(baseText || '');
 
 	const onChange = (e) => {
-		setText(e.target.value)
+		setValue(e.target.value)
 		valueGet && valueGet(e.target.value)
 	}
 
@@ -13,12 +13,18 @@ const Input = ({placeholder, type, required = false, className, valueGet, baseTe
 		type: 'text'
 	}
 
+	let accept;
+
 	switch (type) {
 		case 'tel':
 			inputParam.type = 'tel' 
 			break;
 		case 'email':
 			inputParam.type = 'email' 
+			break;
+		case 'image':
+			inputParam.type = 'file' 
+			accept = 'image/*' 
 			break;
 		default:
 			inputParam.type = 'text' 
@@ -32,8 +38,10 @@ const Input = ({placeholder, type, required = false, className, valueGet, baseTe
 				type={inputParam.type} 
 				placeholder={placeholder} 
 				required={required}
-				value={text} 
+				value={value} 
 				onChange={onChange}
+				multiple={type=== 'image' ? true : false}
+				accept={accept}
 			/>
 		</label>
 	)
