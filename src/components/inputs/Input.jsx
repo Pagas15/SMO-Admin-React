@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React, {useState} from 'react'
 
-const Input = ({placeholder, type, required = false, className, valueGet}) => {
-	const [text, setText] = useState('');
+const Input = ({placeholder, type, required = false, className, valueGet, baseText}) => {
+	const [text, setText] = useState(baseText || '');
 
 	const onChange = (e) => {
 		setText(e.target.value)
