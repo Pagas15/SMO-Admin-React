@@ -1,25 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import BtnLine from '../components/buttons/BtnLine';
+import Loader from '../components/decorateElemetn/Loader';
 import { FilterWrap, InputWrap, Search, Selector } from '../components/inputs';
 import ListSelect from '../components/inputs/ListSelect';
 import RadioButtons from '../components/RadioButtons';
 import TableInfo from '../components/table/TableInfo';
-
-const listSelects = {
-	be: 'Belgium',
-	ua: 'Ukraine',
-	ru: 'Russia',
-	uk: 'United Kingdom'
-}
+import { requestGetAssetsCountries, requestListItems } from '../utils/scripts';
 
 const listCategory = {
-	bnk: 'Bank Account',
-	rle: 'Real Estate',
-	com: 'Company',
-	car: 'Car',
-	art: 'Art',
-	htl: 'Hotel',
-	oth: 'Other',
+	'Bank Account': 'Bank Account',
+	'Real Estate': 'Real Estate',
+	'Company': 'Company',
+	'Car': 'Car',
+	'Art': 'Art',
+	'Hotel': 'Hotel',
+	'Other': 'Other'
 }
 
 const lister = {
@@ -27,169 +22,39 @@ const lister = {
 	'Andrey Patrushev' : 2
 }
 
-
-const items = [
-	{
-		id: 1,
-		name: 'Andrey Guryev',
-		country: 'Belgium',
-		bank: 'AXA Bank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 2,
-		name: 'Andrey Guryev',
-		country: 'Belgium',
-		bank: 'Consorsbank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 3,
-		name: 'Andrey Guryev',
-		country: 'Belgium',
-		bank: 'ABC International Bank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 4,
-		name: 'Andrey Guryev',
-		country: 'Belgium',
-		bank: 'Blom Bank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 5,
-		name: 'Andrey Guryev',
-		country: 'Belgium',
-		bank: 'Financial Intelligence',
-		number: '662356533459696923456'
-	},
-	{
-		id: 6,
-		name: 'Andrey Guryev',
-		country: 'Belgium',
-		bank: 'Bankia',
-		number: '662356533459696923456'
-	},
-	{
-		id: 7,
-		name: 'Andrey Guryev',
-		country: 'Belgium',
-		bank: 'Monobank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 8,
-		name: 'Andrey Guryev',
-		country: 'Belgium',
-		bank: 'MUFG Bank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 9,
-		name: 'Andrey Guryev',
-		country: 'Belgium',
-		bank: 'Idea Bank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 10,
-		name: 'Sasha Wor',
-		country: 'Belgium',
-		bank: 'ING',
-		number: '662356533459696923456'
-	},
-	{
-		id: 11,
-		name: 'Sasha Wor',
-		country: 'Belgium',
-		bank: 'AXA Bank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 12,
-		name: 'Sasha Wor',
-		country: 'Belgium',
-		bank: 'Consorsbank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 13,
-		name: 'Sasha Wor',
-		country: 'Belgium',
-		bank: 'ABC International Bank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 14,
-		name: 'Sasha Wor',
-		country: 'Belgium',
-		bank: 'Blom Bank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 15,
-		name: 'Sasha Wor',
-		country: 'Belgium',
-		bank: 'Financial Intelligence',
-		number: '662356533459696923456'
-	},
-	{
-		id: 16,
-		name: 'Sasha Wor',
-		country: 'Belgium',
-		bank: 'Bankia',
-		number: '662356533459696923456'
-	},
-	{
-		id: 17,
-		name: 'Sasha Wor',
-		country: 'Belgium',
-		bank: 'Monobank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 18,
-		name: 'Sasha Wor',
-		country: 'Belgium',
-		bank: 'MUFG Bank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 19,
-		name: 'Sasha Wor',
-		country: 'Belgium',
-		bank: 'Idea Bank',
-		number: '662356533459696923456'
-	},
-	{
-		id: 20,
-		name: 'Sasha Wor',
-		country: 'Belgium',
-		bank: 'ING',
-		number: '662356533459696923456'
-	},
-];
-
-
 const Reports = () => {
 	const [filterListSend, setFilterListSend] = useState({
-		country: 'be',
-		category: 'bnk',
+		country: '',
+		category: 'Bank Account',
 		filterBy: []
 	})
-	const [suitable, setSuitable] = useState(items)
 	const [selectItems, setSelectItems] = useState(null);
+	const [listCountry, setListCountry] = useState({});
+
+	const [pageTable, setPageTable] = useState(false);
+	const [activePage, setActivePage] = useState(0);
 
 	useEffect(()=> {
-		console.log('Fliter changend');
+		// console.log(`Fliter changend \nType : ${filterListSend.category} \nCountry : ${filterListSend.country} \nPage : ${pageCount}`);
+		setPageTable({...pageTable, items: false})
+		requestListItems({
+			category: filterListSend.category,
+			country: filterListSend.country,
+			pageCount: activePage,
+			callBack: setPageTable
+		})
 		
 		return () => {
 
 		}
-	}, [filterListSend])
-	
+	}, [filterListSend, activePage]);
 
+	useEffect(() => {
+		requestGetAssetsCountries(setListCountry)
+		return () => {}
+	}, [])
+	
+	
 	const changeCountry = (key) => {
 		setFilterListSend({...filterListSend, country: key})
 	}
@@ -205,6 +70,24 @@ const Reports = () => {
 		}
 	}
 
+	const keysCountry = Object.keys(listCountry);
+
+
+	// const tableBlock = ((keysCountry.length >= 1) && ( pageCount >= 1 )) ? (<TableInfo 
+	// 	selectItems={selectItems} 
+	// 	setSelectItems={setSelectItems} 
+	// 	activeType={listCategory[filterListSend.category]}
+	// 	tableInfo={{headers: pageTable.headers, items: pageTable.items}}
+	// 	totalPages={pageTable.totalPages}
+	// />) : ( pageCount === 0 ) ? <div className='blockCenter'><p>No matching options found</p></div> : <div className='blockCenter'><Loader /></div>
+	const tableBlock = pageTable?.pagesTotal >= 1 &&  <TableInfo 
+		selectItems={selectItems} 
+		setSelectItems={setSelectItems} 
+		tableInfo={{headers: pageTable.headers, items: pageTable.items}}
+		totalPages={pageTable.pagesTotal}
+		setActivePage={setActivePage}
+		activePage={activePage}
+	/>
 
 	const sendReport = () => {
 		console.log(selectItems);
@@ -213,8 +96,10 @@ const Reports = () => {
 	return (
 		<div>
 			<InputWrap title="Choose the country">
-				<Selector listSelect={listSelects} activeSelect={filterListSend.country} onChange={changeCountry} />
-				<p className="txt12x14 cWGry" style={{marginTop: '12px'}}>*When you select a country, you will see all the reported assets belonging to it.</p>
+				{(keysCountry.length >= 1) ? (<>
+					<Selector listSelect={listCountry} activeSelect={filterListSend.country} onChange={changeCountry} placeholder="Choose the county" />
+					<p className="txt12x14 cWGry" style={{marginTop: '12px'}}>*When you select a country, you will see all the reported assets belonging to it.</p>
+				</>) : <Loader />}
 			</InputWrap>
 			<RadioButtons listCategory={listCategory} activeCategory={filterListSend.category} onChange={changeCategory} />
 			<FilterWrap title="Filter by">
@@ -228,7 +113,7 @@ const Reports = () => {
 					Send Reports
 				</BtnLine>
 			</FilterWrap>
-			<TableInfo selectItems={selectItems} setSelectItems={setSelectItems} items={suitable} />
+			{tableBlock}
 		</div>
 	)
 }

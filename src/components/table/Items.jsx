@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon/Icon';
-import { ADMIN_REPORTS } from '../../utils/consts';
+import { ADMIN_REPORTS, URL_POST_CHANGE_ASSET_STATUS } from '../../utils/consts';
 import { Link } from "react-router-dom";
 import BtnLine from '../buttons/BtnLine';
 import BtnCircle from '../buttons/BtnCircle';
+import { Selector } from '../inputs';
+import { requestChangeState} from '../../utils/scripts';
 
 
 const sliceTxt = (text, num) => {
 	return text.substr(0, num) + ((text.length >= num) && '...')
 }
+				
 
-function Items({ currentItems, setListActive, listActive, fullListKeys }) {
+function Items({ currentItems, setListActive, listActive, fullListKeys, typeColum }) {
 
 	const [mobileSize, setMobileSize] = useState(false);
 
@@ -48,6 +51,26 @@ function Items({ currentItems, setListActive, listActive, fullListKeys }) {
 					onChange(item.id)
 				}
 
+
+				const listTd = typeColum.map(key => {
+					if(key !== 'status'){
+						return <td key={key} className="txt12x14 w700 cWGry">{mobileSize ? (item[key].split(' ').map(letter => sliceTxt(letter, 3)).join(' ')) : item[key]}</td>
+					} else if (key === 'status') {
+						const onChange = (status) => {
+							requestChangeState(item.id, status, data => {console.log(data)})
+						}
+						return <td key={key} className="tableInfo__selector"><Selector 
+								listSelect={{
+									Pending: 'Pending', 
+									Approved: 'Approved', 
+									Declined: 'Declined'
+								}}
+								activeSelect={item[key]}
+								onChange={onChange}
+							/></td>
+					}
+				})
+
 				return <tr key={item.id} className="tableInfo__item" >
             <td className=''>
 							<label className='inputCheckBox'>
@@ -55,10 +78,7 @@ function Items({ currentItems, setListActive, listActive, fullListKeys }) {
 								<div><Icon type="check" /></div>
 							</label>
 						</td>
-						<td className="txt12x14 w700">{item.country}</td>
-						<td className="txt12x14 w700">{mobileSize ? (item.name.split(' ').map(item => sliceTxt(item, 3)).join(' ')) : item.name}</td>
-						<td className="txt12x14 w700">{mobileSize ? sliceTxt(item.bank, 8) : item.bank}</td>
-						<td className="txt12x14 w700">{mobileSize ? sliceTxt(item.number, 8) : item.number}</td>
+						{listTd}
 						<td>
 							<Link to={ADMIN_REPORTS + '/' + item.id} className="tableInfo__more">
 								{!mobileSize && <BtnLine>More</BtnLine>}

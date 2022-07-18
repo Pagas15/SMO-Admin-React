@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Icon } from '../Icon/Icon';
 
-const Selector = ({listSelect, activeSelect, onChange}) => {
+const Selector = ({listSelect, activeSelect, onChange, placeholder}) => {
 	const [open, setOpen] = useState(false);
 	const [selectActive, setSelectActive] = useState(activeSelect);
 	
@@ -26,11 +26,10 @@ const Selector = ({listSelect, activeSelect, onChange}) => {
 		setOpen(!open)
 	}
 
-
 	return (
 		<div className='inputSelect'>
 			<div className="inputSelect__input" onClick={toggleOpen}>
-				<input className='txt12x14' type="text" onChange={() => {}} value={listSelect[selectActive]}/>
+				<input className='txt12x14' type="text" onChange={() => {}} placeholder={placeholder && placeholder} value={!!(listSelect[selectActive]) ? listSelect[selectActive] : ''}/>
 				<div className="inputSelect__arrow">{<Icon type="arrowDown" />}</div>
 			</div>
 			{open && <ul className="inputSelect__list" >{listItems}</ul>}

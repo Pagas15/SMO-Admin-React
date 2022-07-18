@@ -1,84 +1,38 @@
 import React, { useState } from 'react'
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import BtnBase from '../components/buttons/BtnBase';
 import BtnCircle from '../components/buttons/BtnCircle';
+import Loader from '../components/decorateElemetn/Loader';
 import { Icon } from '../components/Icon/Icon'
-import { Input } from '../components/inputs';
+import { Input, Selector } from '../components/inputs';
+import { requestItemReport, requestChangeState } from '../utils/scripts';
 
-const Report = ({getReport}) => {
+const colectionTexts = {
+	country: 'Country: ',
+	ownerName: 'Owner of Asset: ',
+	comment: 'Comment: ',
+	bankName: 'Bank Name: ',
+	bankNumber: 'Account Number: ',
+	carBrand: 'Car Brand: ',
+	carModel: 'Car Brand: ',
+	licensPlate: 'License Plate: ',
+	artName: 'Name of art: ',
+	hotelName: 'Hotel Name: ',
+	reason: 'The reason the reporter thinks this belongs to an oligarch: ',
+	additionInfo: 'Additional Information: ',
+	address: 'Address: ',
+}
+
+const Report = () => {
 	const params = useParams();
+	const [reportInfo, setReportInfo] = useState(null);
 
-	const reportInfo = getReport(params.reportId - 0)
+	// console.log(reportInfo);
 
 	const [valueInput, setValueInput] = useState('')
-
-	const categoryType = (key) => {
-		switch (key) {
-			
-			case 'bank': 
-					return (<>
-						<p className="txt18x21 reportPage__text">
-							<span className='baseText'>Bank Name: </span>
-							{reportInfo.bankName}
-						</p>
-						<p className="txt18x21 reportPage__text">
-							<span className='baseText'>Account Number: </span>
-							{reportInfo.bankNumber}
-						</p>
-					</>);
-			case 'realEstate': 
-					return (<>
-						<p className="txt18x21 reportPage__text">
-							<span className='baseText'>Category: </span>
-							{reportInfo.realCategory}
-						</p>
-					</>);
-			case 'company': 
-					return (<>
-						<p className="txt18x21 reportPage__text">
-							<span className='baseText'>Category: </span>
-							{reportInfo.companyCategory}
-						</p>
-					</>);
-			case 'car':
-				return (<>
-					<p className="txt18x21 reportPage__text">
-						<span className='baseText'>Car Brand: </span>
-						{reportInfo.carBrand}
-					</p>
-					<p className="txt18x21 reportPage__text">
-						<span className='baseText'>Car Model: </span>
-						{reportInfo.carModel}
-					</p>
-					<p className="txt18x21 reportPage__text">
-						<span className='baseText'>License Plate: </span>
-						{reportInfo.licensPlate}
-					</p>
-				</>);
-			case 'art': 
-					return (<>
-						<p className="txt18x21 reportPage__text">
-							<span className='baseText'>Category: </span>
-							{reportInfo.artCategory}
-						</p>
-						<p className="txt18x21 reportPage__text">
-							<span className='baseText'>Name of art: </span>
-							{reportInfo.artName}
-						</p>
-					</>);
-			case 'hotel': 
-					return (<>
-						<p className="txt18x21 reportPage__text">
-							<span className='baseText'>Hotel Name: </span>
-							{reportInfo.hotelName}
-						</p>
-					</>);
-			default:
-				return (<></>);
-		}
-	}
 
 	const sendReport = () => {
 		console.log('Send function does not exist')
@@ -91,10 +45,14 @@ const Report = ({getReport}) => {
 	}
 
 
-	const imgBlock = !!(reportInfo.imgLink) ? 
+	useEffect(() => {
+		requestItemReport(params.reportId, setReportInfo)
+	}, [])
+
+	const imgBlock = !!(reportInfo?.photo) ? 
 		<Popup 
 			trigger={<div className="reportPage__img">
-					<img src={reportInfo.imgLink} alt="" />
+					<img src={reportInfo.photo} alt="" />
 					<BtnCircle 
 						size="24px"
 						style={{width: '24px', height: '24px', fontSize: '12px'}}
@@ -106,7 +64,7 @@ const Report = ({getReport}) => {
 			modal
 		>
 			<div className='popup__modalImg'>
-				<img src={reportInfo.imgLink} alt="" />
+				<img src={reportInfo.photo} alt="" />
 			</div>
 		</Popup> : <></>;
 
@@ -130,30 +88,45 @@ const Report = ({getReport}) => {
 		</div>
 	</Popup>)
 
-	return (
-		<div className='reportPage' style={{minHeight: '70vh'}}>
-			{imgBlock }
-			<p className="txt18x21 reportPage__text">
-				<span className='baseText'>Country: </span>
-				{reportInfo.country}
-			</p>
-			<p className="txt18x21 reportPage__text">
-				<span className='baseText'>Owner of Asset: </span>
-				{reportInfo.owner}
-			</p>
-			{categoryType(reportInfo.category)}
-			<p className="txt18x21 reportPage__text">
-				<span className='baseText'>The reason the reporter thinks this belongs to an oligarch: </span>
-				{reportInfo.reason}
-			</p>
-			<p className="txt18x21 reportPage__text">
-				<span className='baseText'>Additional Information: </span>
-				{reportInfo.additionInfo}
-			</p>
-			{sendReportBtn}
-			
-		</div>
-	)
+	const listText = reportInfo && Object.keys(reportInfo).map(key => {
+		if(!!colectionTexts[key]){
+			return (
+				<p className="txt18x21 reportPage__text" key={key}>
+					<span className='baseText'>{colectionTexts[key]} </span>
+					{reportInfo[key]}
+				</p>
+			)
+		} else {
+			return
+		}
+	})
+
+	const onChange = (status) => {
+		requestChangeState(params.reportId, status, data => {console.log(data)})
+	}
+
+	const selector = () => <Selector 
+		listSelect={{
+			Pending: 'Pending', 
+			Approved: 'Approved', 
+			Declined: 'Declined'
+		}}
+		activeSelect={reportInfo.status}
+		onChange={onChange}
+	/>
+
+	const page = reportInfo === null 
+		? <div className='blockCenter'><Loader /></div>
+		: (Object.keys(reportInfo).length >= 1) 
+		? (<div className='reportPage' style={{minHeight: '70vh'}}>
+				{imgBlock }
+				{listText}
+				{selector()}
+				{sendReportBtn
+			}</div>) 
+		: (<p>Page not found</p>)
+
+	return page 
 }
 
 export default Report
