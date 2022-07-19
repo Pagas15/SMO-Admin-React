@@ -27,7 +27,7 @@ export const TYPE_FORM_COLECTION = {
 	institution_address: { title: 'Institution Address', placeholder: 'Institution Address'},
 	institution_email: { title: 'Institution email:', placeholder: 'Institution email:', type: "email"},
 	institution_contact_phone: { title: 'Institution contact number:', placeholder: 'Institution contact number', type: "tel"},
-	contact_person: { title: 'Contact Person:', placeholder: 'Contact Person'},
+	institution_contact_person: { title: 'Contact Person:', placeholder: 'Contact Person'},
 	contact_person_email: { title: 'Contact Person’s email:', placeholder: 'Contact Person’s email', type: "email"},
 	contact_person_phone: { title: 'Contact Person’s number:', placeholder: 'Contact Person’s number', type: "tel"}
 }

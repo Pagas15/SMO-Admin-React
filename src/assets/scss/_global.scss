@@ -1919,6 +1919,15 @@
 		.btn, label{
 			width: 100%;
 		}
+		.inputWrap{
+			margin-bottom: 20px;
+			.title{
+				// text-align: right;
+			}
+			&:last-child{
+				margin-bottom: 0;
+			}
+		}
 	}
 }
 
