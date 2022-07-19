@@ -23,6 +23,11 @@ const Configuration = () => {
 
 	const keysListForms = Object.keys(TYPE_FORM_COLECTION);
 
+	const requersListOligarch = () => {
+		listOligarchs && setListOligarchs({ ...listOligarchs, items: 0 })
+		requestGetOligarchs(setListOligarchs, activePage)
+	}
+
 	useEffect(() => {
 		requestGetCountries(setListCountry)
 		return () => { }
@@ -36,11 +41,7 @@ const Configuration = () => {
 		return () => { }
 	}, [filterListSend.country_id])
 
-	useEffect(() => {
-		listOligarchs && setListOligarchs({ ...listOligarchs, items: 0 })
-		requestGetOligarchs(setListOligarchs, activePage)
-		return () => { }
-	}, [activePage])
+	useEffect(requersListOligarch, [activePage])
 
 	useEffect(() => {
 		setFilterListSend({ ...filterListSend, ...listForms })
@@ -80,13 +81,21 @@ const Configuration = () => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		requestAddPerson(addNewPerson, item => resultShow(item, handleSubmit))
+		requestAddPerson(addNewPerson, item => resultShow(item, handleSubmit, () => {
+			setPopupOpen(!popupOpen);
+			setListOligarchs(false);
+			requersListOligarch();
+		}))
 	}
+
+	const [popupOpen, setPopupOpen] = useState(false);
 
 	const popupAddPersone = <Popup
 		trigger={<BtnLine modificatorsClass={['big', 'icon']} icon={<Icon type="plus" />} > Add new person </BtnLine>}
 		position="center center"
 		modal
+		open={popupOpen}
+		onOpen={() => setPopupOpen(!popupOpen)}
 	>
 		<div className="popup__modal">
 			<form className="popup__cnt" onSubmit={handleSubmit}>
@@ -100,7 +109,7 @@ const Configuration = () => {
 				<InputWrap title={'Image'}>
 					<Input type={'text'} required placeholder={'Image'} valueGet={value => { changeAddNewPerson('image', value) }} />
 				</InputWrap>
-				<BtnBase theme="dark" type="input">Add new person</BtnBase>
+				<BtnBase theme="dark" type="input" >Add new person</BtnBase>
 			</form>
 		</div>
 	</Popup>
