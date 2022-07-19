@@ -33,7 +33,7 @@ function Items({ reportEmail, currentItems, setListActive, listActive, fullListK
 
 	const onChange = (key) => {
 		listActive === null ? setListActive([key]) :
-		listActive === 'oll' ? setListActive([...fullListKeys.filter(id => id !== key)]) : 
+		listActive === 'all' ? setListActive([...fullListKeys.filter(id => id !== key)]) : 
 		listActive.includes(key) ? listActive.length <= 1 ? setListActive(null) :
 		setListActive([...listActive.filter(id => id !== key)]) :
 		setListActive([...listActive, key])
@@ -44,7 +44,7 @@ function Items({ reportEmail, currentItems, setListActive, listActive, fullListK
       {currentItems && currentItems.map((item) => {
 				const activeStatus = 
 					listActive === null ? false :
-					listActive === 'oll' ? true : 
+					listActive === 'all' ? true : 
 					listActive.includes(item.id)
 
 				const localOnChange = () => {
