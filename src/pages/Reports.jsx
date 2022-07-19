@@ -78,7 +78,7 @@ const Reports = () => {
 	/>
 
 	const sendReport = () => {
-		const data = {assetsId: selectItems.join('|'), country: filterListSend.country };
+		const data = {assetsId: selectItems === 'oll' ? 'oll' : selectItems.join('|'), country: filterListSend.country };
 		requestSendReports(data,  item => resultShow(item, sendReport, () => {
 			sendListItems();
 			setSelectItems(null);
