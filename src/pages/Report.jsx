@@ -32,8 +32,6 @@ const Report = () => {
 
 	const [valueInput, setValueInput] = useState('')
 
-	console.log(reportInfo);
-
 	const sendReport = () => {
 		requestSendReport(valueInput, item => resultShow(item, sendReport))
 	}
