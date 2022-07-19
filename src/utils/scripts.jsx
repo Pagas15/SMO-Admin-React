@@ -122,9 +122,14 @@ export const requestGetOligarchs = (callBack, page) => {
   })
 }
 
-export const resultShow = (item, callBack) => {
-  console.log(item);
-  (item?.success) ?
-    alert('Changes saved') :
+export const resultShow = (item, callBack, addCallBack) => {
+  const optionTrue = () => {
+    alert('Changes saved'); 
+    addCallBack && addCallBack()
+  }
+  const optionFalse = () => {
     (window.confirm('Failed, try again?')) && callBack();
+  }
+  (item?.success) ? optionTrue() : optionFalse()
+  
 }

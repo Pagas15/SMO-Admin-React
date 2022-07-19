@@ -13,7 +13,7 @@ const sliceTxt = (text, num) => {
 }
 				
 
-function Items({ currentItems, setListActive, listActive, fullListKeys, typeColum }) {
+function Items({ reportEmail, currentItems, setListActive, listActive, fullListKeys, typeColum }) {
 
 	const [mobileSize, setMobileSize] = useState(false);
 
@@ -74,7 +74,7 @@ function Items({ currentItems, setListActive, listActive, fullListKeys, typeColu
 				return <tr key={item.id} className="tableInfo__item" >
             <td className=''>
 							<label className='inputCheckBox'>
-								<input type="checkbox" checked={activeStatus} onChange={localOnChange} />
+								<input type="checkbox" checked={!!reportEmail ? activeStatus : false} onChange={localOnChange} />
 								<div><Icon type="check" /></div>
 							</label>
 						</td>
