@@ -7,7 +7,7 @@ import Popup from 'reactjs-popup';
 import { Input, InputsWrap, InputWrap, Selector } from '../components/inputs'
 import ListPeople from '../components/ListPeople'
 import { TYPE_FORM_COLECTION } from '../utils/consts'
-import { requestGetByCountry, requestGetCountries, requestGetOligarchs, requestSaveInstitution, resultShow } from '../utils/scripts'
+import { requestAddPerson, requestGetByCountry, requestGetCountries, requestGetOligarchs, requestSaveInstitution, resultShow } from '../utils/scripts'
 import BtnBase from '../components/buttons/BtnBase'
 
 
@@ -18,7 +18,7 @@ const Configuration = () => {
 	const [listOligarchs, setListOligarchs] = useState(false);
 	const [activePage, setActivePage] = useState(0);
 
-	const [addNewPerson, setAddNewPerson] = useState({ name: '', desctiption: '' });
+	const [addNewPerson, setAddNewPerson] = useState({ name: '', desctiption: '', image: '' });
 
 	const keysListForms = Object.keys(TYPE_FORM_COLECTION);
 
@@ -79,7 +79,7 @@ const Configuration = () => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(addNewPerson);
+		requestAddPerson(addNewPerson, item => resultShow(item, handleSubmit))
 	}
 
 	const popupAddPersone = <Popup
@@ -91,13 +91,13 @@ const Configuration = () => {
 			<form className="popup__cnt" onSubmit={handleSubmit}>
 				<p className='txt20x22 w700 mb40'>Enter the oligarch's details</p>
 				<InputWrap title={'Name'}>
-					<Input type={'text'} placeholder={'Name'} valueGet={value => { changeAddNewPerson('name', value) }} />
+					<Input type={'text'} required placeholder={'Name'} valueGet={value => { changeAddNewPerson('name', value) }} />
 				</InputWrap>
 				<InputWrap title={'Description'}>
-					<Input type={'text'} placeholder={'Description'} valueGet={value => { changeAddNewPerson('description', value) }} />
+					<Input type={'text'} required placeholder={'Description'} valueGet={value => { changeAddNewPerson('description', value) }} />
 				</InputWrap>
 				<InputWrap title={'Image'}>
-					<Input type={'text'} placeholder={'Image'} valueGet={value => { changeAddNewPerson('image', value) }} />
+					<Input type={'text'} required placeholder={'Image'} valueGet={value => { changeAddNewPerson('image', value) }} />
 				</InputWrap>
 				<BtnBase theme="dark" type="input">Add new person</BtnBase>
 			</form>

@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN, URL_GET_ASSETS_BY_CATEGORY, URL_GET_ASSETS_COUNTRIES, URL_GET_ASSET_BY_ID, URL_GET_COUNTRIES, URL_GET_INSTITUTION_BY_COUNTRY, URL_GET_OLIGARCHS, URL_POST_CHANGE_ASSET_STATUS, URL_POST_SAVE_INSTITUTION, URL_POST_SENT_REPORT } from "./consts";
+import { ACCESS_TOKEN, URL_GET_ASSETS_BY_CATEGORY, URL_GET_ASSETS_COUNTRIES, URL_GET_ASSET_BY_ID, URL_GET_COUNTRIES, URL_GET_INSTITUTION_BY_COUNTRY, URL_GET_OLIGARCHS, URL_POST_ADD_PERSON, URL_POST_CHANGE_ASSET_STATUS, URL_POST_SAVE_INSTITUTION, URL_POST_SENT_REPORT } from "./consts";
 
 
 export async function request({url, method = 'GET', data = null, callBack}) {
@@ -42,6 +42,14 @@ export const requestSaveInstitution = (data, callBack) => {
 export const requestSendReport = (data, callBack) => {
 	request({
 		url: URL_POST_SENT_REPORT,
+		method: 'POST',
+		data,
+		callBack
+	})
+}
+export const requestAddPerson = (data, callBack) => {
+	request({
+		url: URL_POST_ADD_PERSON,
 		method: 'POST',
 		data,
 		callBack
