@@ -5,7 +5,7 @@ import { FilterWrap, InputWrap, Search, Selector } from '../components/inputs';
 import ListSelect from '../components/inputs/ListSelect';
 import RadioButtons from '../components/RadioButtons';
 import TableInfo from '../components/table/TableInfo';
-import { requestGetAssetsCountries, requestListItems } from '../utils/scripts';
+import { requestGetAssetsCountries, requestListItems, requestSendReports, resultShow } from '../utils/scripts';
 
 const listCategory = {
 	'Bank Account': 'Bank Account',
@@ -34,7 +34,7 @@ const Reports = () => {
 	const [pageTable, setPageTable] = useState(false);
 	const [activePage, setActivePage] = useState(0);
 
-	useEffect(()=> {
+	const sendListItems = () => {
 		setPageTable({...pageTable, items: false})
 		requestListItems({
 			category: filterListSend.category,
@@ -42,11 +42,8 @@ const Reports = () => {
 			pageCount: activePage,
 			callBack: setPageTable
 		})
-		
-		return () => {
-
-		}
-	}, [filterListSend, activePage]);
+	}
+	useEffect(sendListItems, [filterListSend, activePage]);
 
 	useEffect(() => {
 		requestGetAssetsCountries(setListCountry)
@@ -81,7 +78,11 @@ const Reports = () => {
 	/>
 
 	const sendReport = () => {
-		console.log(selectItems);
+		const data = {assetsId: selectItems.join('|'), country: filterListSend.country };
+		requestSendReports(data,  item => resultShow(item, sendReport, () => {
+			sendListItems();
+			setSelectItems(null);
+		}));
 	}
 
 	return (

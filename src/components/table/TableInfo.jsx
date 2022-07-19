@@ -46,6 +46,7 @@ const TableInfo = ({reportEmail, selectItems, setSelectItems, tableInfo, totalPa
 						listActive={selectItems} 
 						setListActive={setSelectItems}
 						fullListKeys={fullListKeys} 
+						reportEmail={reportEmail}
 					/> : <tr><td><Loader /></td></tr>}
 				</tbody>
 			</table>
