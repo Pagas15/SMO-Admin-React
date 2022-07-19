@@ -10,6 +10,7 @@ import { TYPE_FORM_COLECTION } from '../utils/consts'
 import { requestAddPerson, requestGetByCountry, requestGetCountries, requestGetOligarchs, requestSaveInstitution, resultShow } from '../utils/scripts'
 import BtnBase from '../components/buttons/BtnBase'
 
+const FORM_KEY = 'form1';
 
 const Configuration = () => {
 	const [listCountry, setListCountry] = useState([]);
@@ -114,12 +115,12 @@ const Configuration = () => {
 				{(listForms) && <BtnLine
 					style={{ marginLeft: 'auto' }}
 					modificatorsClass={['big']}
-					form="form1"
+					form={FORM_KEY}
 				>
 					Save
 				</BtnLine>}
 			</div>
-			<InputsWrap id="form1" onSubmit={handleSubmitForm} >
+			<InputsWrap id={FORM_KEY} onSubmit={handleSubmitForm} >
 				{(listForms) ?
 					listArray() :
 					filterListSend?.country_id ?

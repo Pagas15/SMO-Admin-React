@@ -32,7 +32,7 @@ const Report = () => {
 
 	const [valueInput, setValueInput] = useState('')
 
-	console.log(valueInput);
+	console.log(reportInfo);
 
 	const sendReport = () => {
 		requestSendReport(valueInput, item => resultShow(item, sendReport))
@@ -42,7 +42,6 @@ const Report = () => {
 		event.preventDefault();
 		sendReport()
 	}
-
 
 	useEffect(() => {
 		requestItemReport(params.reportId, setReportInfo)
