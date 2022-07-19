@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { useEffect } from 'react'
 import BtnLine from '../components/buttons/BtnLine'
 import Loader from '../components/decorateElemetn/Loader'
@@ -18,54 +18,54 @@ const Configuration = () => {
 	const [listOligarchs, setListOligarchs] = useState(false);
 	const [activePage, setActivePage] = useState(0);
 
-	const [addNewPerson, setAddNewPerson] = useState({name: '', desctiption: ''});
+	const [addNewPerson, setAddNewPerson] = useState({ name: '', desctiption: '' });
 
 	const keysListForms = Object.keys(TYPE_FORM_COLECTION);
 
 	useEffect(() => {
 		requestGetCountries(setListCountry)
-		return () => {}
+		return () => { }
 	}, [])
 
 	useEffect(() => {
-		if(filterListSend?.country_id){
+		if (filterListSend?.country_id) {
 			setListForms(false)
 			requestGetByCountry(filterListSend.country_id, setListForms)
 		}
-		return () => {}
+		return () => { }
 	}, [filterListSend.country_id])
 
 	useEffect(() => {
-		listOligarchs && setListOligarchs({...listOligarchs, items: 0})
+		listOligarchs && setListOligarchs({ ...listOligarchs, items: 0 })
 		requestGetOligarchs(setListOligarchs, activePage)
-		return () => {}
+		return () => { }
 	}, [activePage])
 
 	useEffect(() => {
-		setFilterListSend({...filterListSend, ...listForms})
-		return () => {}
+		setFilterListSend({ ...filterListSend, ...listForms })
+		return () => { }
 	}, [listForms])
 
 	const changeCountry = (key) => {
-		setFilterListSend({ country_id: key, ...keysListForms.reduce((obj, i) => ({...obj, [i]: ''}), {})})
+		setFilterListSend({ country_id: key, ...keysListForms.reduce((obj, i) => ({ ...obj, [i]: '' }), {}) })
 	}
 	const changeInput = (key, text) => {
-		setFilterListSend({...filterListSend, [key]: text})
+		setFilterListSend({ ...filterListSend, [key]: text })
 	}
 	const changeAddNewPerson = (key, value) => {
-		setAddNewPerson({...addNewPerson, [key]: value })
+		setAddNewPerson({ ...addNewPerson, [key]: value })
 	}
-	
+
 	const listArray = () => {
 		return keysListForms.map(item => {
 			const itemer = TYPE_FORM_COLECTION[item];
 			const autoText = !!(listForms[item]) ? listForms[item] : '';
 			// console.log(autoText);
-	
+
 			const getInputValue = (value) => {
 				changeInput(item, value)
 			}
-	
+
 			return <InputWrap title={itemer.title} key={item}>
 				<Input type={itemer.type} placeholder={itemer.placeholder} valueGet={getInputValue} baseText={autoText} />
 			</InputWrap>
@@ -75,13 +75,13 @@ const Configuration = () => {
 	const sendSave = () => {
 		requestSaveInstitution(filterListSend, item => {
 			console.log(item);
-			(item?.success) ? 
-			alert('Changes saved') : 
-			(window.confirm('Failed, try again?')) &&	sendSave();
+			(item?.success) ?
+				alert('Changes saved') :
+				(window.confirm('Failed, try again?')) && sendSave();
 		})
 	}
 
-	
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		console.log(addNewPerson);
@@ -96,13 +96,13 @@ const Configuration = () => {
 			<form className="popup__cnt" onSubmit={handleSubmit}>
 				<p className='txt20x22 w700 mb40'>Enter the mail to which you want to send the report</p>
 				<InputWrap title={'Name'}>
-					<Input type={'text'} placeholder={'Name'} valueGet={value => {changeAddNewPerson('name', value)}} />
+					<Input type={'text'} placeholder={'Name'} valueGet={value => { changeAddNewPerson('name', value) }} />
 				</InputWrap>
 				<InputWrap title={'Description'}>
-					<Input type={'text'} placeholder={'Description'} valueGet={value => {changeAddNewPerson('description', value)}} />
+					<Input type={'text'} placeholder={'Description'} valueGet={value => { changeAddNewPerson('description', value) }} />
 				</InputWrap>
 				<InputWrap title={'Image'}>
-					<Input type={'image'} placeholder={'Image'} valueGet={value => {changeAddNewPerson('image', value)}} />
+					<Input type={'text'} placeholder={'Image'} valueGet={value => { changeAddNewPerson('image', value) }} />
 				</InputWrap>
 				<BtnBase theme="dark" type="input">Add new person</BtnBase>
 			</form>
@@ -114,10 +114,10 @@ const Configuration = () => {
 			<div className='blockRow'>
 				<InputWrap title="Choose the country">
 					<Selector listSelect={listCountry} activeSelect={filterListSend.country} onChange={changeCountry} placeholder="Choose the county" />
-					<p className="txt12x14 cWGry" style={{marginTop: '12px'}}>It displays all the information according to the selected country above and its email template</p>
+					<p className="txt12x14 cWGry" style={{ marginTop: '12px' }}>It displays all the information according to the selected country above and its email template</p>
 				</InputWrap>
-				{(listForms) && <BtnLine 
-					style={{marginLeft: 'auto'}}
+				{(listForms) && <BtnLine
+					style={{ marginLeft: 'auto' }}
 					modificatorsClass={['big']}
 					onClick={sendSave}
 				>
@@ -125,18 +125,18 @@ const Configuration = () => {
 				</BtnLine>}
 			</div>
 			<InputsWrap >
-			{ (listForms) ?	
-				listArray() : 
-				filterListSend?.country_id ? 
-				<div className='blockCenter'><Loader /></div> :
-				<div className='blockCenter'><p>Select some country</p></div> 
-			}
+				{(listForms) ?
+					listArray() :
+					filterListSend?.country_id ?
+						<div className='blockCenter'><Loader /></div> :
+						<div className='blockCenter'><p>Select some country</p></div>
+				}
 			</InputsWrap>
 			<div className="blockRow">
 				<p className='titleM w800'>List of sanctioned people</p>
 				{popupAddPersone}
 			</div>
-			{listOligarchs ? <ListPeople 
+			{listOligarchs ? <ListPeople
 				items={listOligarchs.items}
 				totalPage={listOligarchs.pagesTotal.total}
 				setActivePage={setActivePage}

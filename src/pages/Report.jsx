@@ -30,13 +30,11 @@ const Report = () => {
 	const params = useParams();
 	const [reportInfo, setReportInfo] = useState(null);
 
-	// console.log(reportInfo);
-
 	const [valueInput, setValueInput] = useState('')
 
 	const sendReport = () => {
 		console.log('Send function does not exist')
-		console.log(`Emeil for send: ${valueInput}`);
+		console.log(`Emeil for send: ${reportInfo?.reportEmail}`);
 	}
 
 	const handleSubmit = (event) => {
@@ -82,6 +80,7 @@ const Report = () => {
 					required={true} 
 					placeholder="Enter the email" 
 					valueGet={setValueInput}
+					baseText={reportInfo?.reportEmail || ''}
 				/>
 				<BtnBase theme="dark" type="input">Send</BtnBase>
 			</form>
