@@ -72,10 +72,10 @@ const Configuration = () => {
 		})
 	}
 
-	const sendSave = () => {
-		requestSaveInstitution(filterListSend, item => resultShow(item, sendSave))
+	const handleSubmitForm = (event) => {
+		event.preventDefault();
+		requestSaveInstitution(filterListSend, item => resultShow(item, handleSubmitForm))
 	}
-
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -114,12 +114,12 @@ const Configuration = () => {
 				{(listForms) && <BtnLine
 					style={{ marginLeft: 'auto' }}
 					modificatorsClass={['big']}
-					onClick={sendSave}
+					form="form1"
 				>
 					Save
 				</BtnLine>}
 			</div>
-			<InputsWrap >
+			<InputsWrap id="form1" onSubmit={handleSubmitForm} >
 				{(listForms) ?
 					listArray() :
 					filterListSend?.country_id ?
