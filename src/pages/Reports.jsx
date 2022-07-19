@@ -35,7 +35,6 @@ const Reports = () => {
 	const [activePage, setActivePage] = useState(0);
 
 	useEffect(()=> {
-		// console.log(`Fliter changend \nType : ${filterListSend.category} \nCountry : ${filterListSend.country} \nPage : ${pageCount}`);
 		setPageTable({...pageTable, items: false})
 		requestListItems({
 			category: filterListSend.category,
@@ -71,20 +70,12 @@ const Reports = () => {
 	}
 
 	const keysCountry = Object.keys(listCountry);
-
-
-	// const tableBlock = ((keysCountry.length >= 1) && ( pageCount >= 1 )) ? (<TableInfo 
-	// 	selectItems={selectItems} 
-	// 	setSelectItems={setSelectItems} 
-	// 	activeType={listCategory[filterListSend.category]}
-	// 	tableInfo={{headers: pageTable.headers, items: pageTable.items}}
-	// 	totalPages={pageTable.totalPages}
-	// />) : ( pageCount === 0 ) ? <div className='blockCenter'><p>No matching options found</p></div> : <div className='blockCenter'><Loader /></div>
 	const tableBlock = pageTable?.pagesTotal >= 1 &&  <TableInfo 
 		selectItems={selectItems} 
 		setSelectItems={setSelectItems} 
 		tableInfo={{headers: pageTable.headers, items: pageTable.items}}
 		totalPages={pageTable.pagesTotal}
+		reportEmail={pageTable?.reportEmail}
 		setActivePage={setActivePage}
 		activePage={activePage}
 	/>

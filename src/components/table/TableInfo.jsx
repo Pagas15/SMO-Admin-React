@@ -5,7 +5,7 @@ import { Icon } from '../Icon/Icon';
 
 import Items from './Items'
 
-const TableInfo = ({selectItems, setSelectItems, tableInfo, totalPages, setActivePage, activePage}) => {
+const TableInfo = ({reportEmail, selectItems, setSelectItems, tableInfo, totalPages, setActivePage, activePage}) => {
 
 	const fullListKeys = () => tableInfo.items?.map(item => item.id);
 	
@@ -14,7 +14,7 @@ const TableInfo = ({selectItems, setSelectItems, tableInfo, totalPages, setActiv
 	}
 
 	const onSelectOll = () => {
-		selectItems === 'oll' ? setSelectItems(null) : setSelectItems('oll');
+		!!(reportEmail) ? (selectItems === 'oll' ? setSelectItems(null) : setSelectItems('oll')) : setSelectItems(null);
 	}
 
 

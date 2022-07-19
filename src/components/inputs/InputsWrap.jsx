@@ -1,8 +1,8 @@
 import React from 'react'
 
-const InputsWrap = ({children}) => {
+const InputsWrap = ({children, ...props}) => {
 	return (
-		<div className="inputsWrap">{children}</div>
+		<form {...props} className="inputsWrap">{children}</form>
 	)
 }
 
