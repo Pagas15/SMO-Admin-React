@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import BtnLine from '../components/buttons/BtnLine';
 import Loader from '../components/decorateElemetn/Loader';
-import { FilterWrap, InputWrap, Search, Selector } from '../components/inputs';
-import ListSelect from '../components/inputs/ListSelect';
+import { FilterWrap, Input, InputWrap, Selector } from '../components/inputs';
 import RadioButtons from '../components/RadioButtons';
 import TableInfo from '../components/table/TableInfo';
 import { requestGetAssetsCountries, requestListItems, requestSendReports, resultShow } from '../utils/scripts';
@@ -17,16 +16,12 @@ const listCategory = {
 	'Other': 'Other'
 }
 
-const lister = {
-	'Andrey Puchkov' : 1,
-	'Andrey Patrushev' : 2
-}
 
 const Reports = () => {
 	const [filterListSend, setFilterListSend] = useState({
 		country: '',
 		category: 'Bank Account',
-		filterBy: []
+		filter: ''
 	})
 	const [selectItems, setSelectItems] = useState(null);
 	const [listCountry, setListCountry] = useState({});
@@ -39,6 +34,7 @@ const Reports = () => {
 		requestListItems({
 			category: filterListSend.category,
 			country: filterListSend.country,
+			filter: filterListSend.filter,
 			pageCount: activePage,
 			callBack: setPageTable
 		})
@@ -57,13 +53,8 @@ const Reports = () => {
 	const changeCategory = (key) => {
 		setFilterListSend({...filterListSend, category: key})
 	}
-	const changeRemuveItem = (key) => {
-		setFilterListSend({...filterListSend, filterBy: [...filterListSend.filterBy.filter(item => item !== key)]})
-	}
-	const changeAddItem = (key) => { 
-		if(!filterListSend.filterBy.includes(key)){
-			setFilterListSend({...filterListSend, filterBy: [...filterListSend.filterBy, key]})
-		}
+	const changeFilter = (value) => { 
+		setFilterListSend({...filterListSend, filter: value})
 	}
 
 	const keysCountry = Object.keys(listCountry);
@@ -95,8 +86,12 @@ const Reports = () => {
 			</InputWrap>
 			<RadioButtons listCategory={listCategory} activeCategory={filterListSend.category} onChange={changeCategory} />
 			<FilterWrap title="Filter by">
-				<Search placeholder="Type the name to filter" objectSearch={lister} selectVar={changeAddItem} />
-				<ListSelect listFilter={filterListSend.filterBy} remuveItem={changeRemuveItem} />
+				<Input 
+					type="text" 
+					placeholder="Type the name to filter" 
+					valueGet={changeFilter}
+					baseText={filterListSend.filter}
+				/>
 				<BtnLine 
 					style={{display: selectItems === null ? "none" : 'block' }}
 					modificatorsClass={['big']}
