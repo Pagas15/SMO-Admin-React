@@ -83,9 +83,9 @@ export const requestItemReport = (id, callBack) => {
 	})
 }
 
-export const requestListItems = ({category, country, pageCount, callBack}) => {
+export const requestListItems = ({category, country, filter, pageCount, callBack}) => {
   request({
-    url: URL_GET_ASSETS_BY_CATEGORY + `?type=${category}&country=${country}&page=${(!!pageCount ) ? pageCount : 1 }`, 
+    url: URL_GET_ASSETS_BY_CATEGORY + `?type=${category}&country=${country}&filter=${filter}&page=${(!!pageCount ) ? pageCount : 1 }`, 
     callBack
   })
 }
