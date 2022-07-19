@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN, URL_GET_ASSETS_BY_CATEGORY, URL_GET_ASSETS_COUNTRIES, URL_GET_ASSET_BY_ID, URL_GET_COUNTRIES, URL_GET_INSTITUTION_BY_COUNTRY, URL_GET_OLIGARCHS, URL_POST_CHANGE_ASSET_STATUS, URL_POST_SAVE_INSTITUTION } from "./consts";
+import { ACCESS_TOKEN, URL_GET_ASSETS_BY_CATEGORY, URL_GET_ASSETS_COUNTRIES, URL_GET_ASSET_BY_ID, URL_GET_COUNTRIES, URL_GET_INSTITUTION_BY_COUNTRY, URL_GET_OLIGARCHS, URL_POST_CHANGE_ASSET_STATUS, URL_POST_SAVE_INSTITUTION, URL_POST_SENT_REPORT } from "./consts";
 
 
 export async function request({url, method = 'GET', data = null, callBack}) {
@@ -39,6 +39,14 @@ export const requestSaveInstitution = (data, callBack) => {
 		callBack
 	})
 }
+export const requestSendReport = (data, callBack) => {
+	request({
+		url: URL_POST_SENT_REPORT,
+		method: 'POST',
+		data,
+		callBack
+	})
+}
 export const requestChangeState = (id, status, callBack) => {
 	request({
 		url: URL_POST_CHANGE_ASSET_STATUS,
@@ -50,6 +58,7 @@ export const requestChangeState = (id, status, callBack) => {
 		callBack
 	})
 }
+
 
 export const requestItemReport = (id, callBack) => {
 	request({
@@ -95,4 +104,11 @@ export const requestGetOligarchs = (callBack, page) => {
     url: URL_GET_OLIGARCHS + `?page=${(!!page ) ? page : 1 }`,
     callBack
   })
+}
+
+export const resultShow = (item, callBack) => {
+  console.log(item);
+  (item?.success) ?
+    alert('Changes saved') :
+    (window.confirm('Failed, try again?')) && callBack();
 }

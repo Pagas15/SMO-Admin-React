@@ -19,6 +19,7 @@ export const URL_GET_COUNTRIES = URL_GET_API + '/getCountries';
 export const URL_GET_INSTITUTION_BY_COUNTRY = URL_GET_API + '/getInstitutionByCountry';
 export const URL_GET_OLIGARCHS = URL_GET_API + '/getOligarchs';
 export const URL_POST_SAVE_INSTITUTION = URL_GET_API + '/saveInstitution';
+export const URL_POST_SENT_REPORT = URL_GET_API + '/sendReport';
 
 export const ACCESS_TOKEN = 'c5b8d8a89bba4c5ad36217999f0419a2ba4d26f5066f9644d5923b23782f75ec';
 

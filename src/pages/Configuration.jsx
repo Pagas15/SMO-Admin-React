@@ -7,7 +7,7 @@ import Popup from 'reactjs-popup';
 import { Input, InputsWrap, InputWrap, Selector } from '../components/inputs'
 import ListPeople from '../components/ListPeople'
 import { TYPE_FORM_COLECTION } from '../utils/consts'
-import { requestGetByCountry, requestGetCountries, requestGetOligarchs, requestSaveInstitution } from '../utils/scripts'
+import { requestGetByCountry, requestGetCountries, requestGetOligarchs, requestSaveInstitution, resultShow } from '../utils/scripts'
 import BtnBase from '../components/buttons/BtnBase'
 
 
@@ -73,12 +73,7 @@ const Configuration = () => {
 	}
 
 	const sendSave = () => {
-		requestSaveInstitution(filterListSend, item => {
-			console.log(item);
-			(item?.success) ?
-				alert('Changes saved') :
-				(window.confirm('Failed, try again?')) && sendSave();
-		})
+		requestSaveInstitution(filterListSend, item => resultShow(item, sendSave))
 	}
 
 
@@ -94,7 +89,7 @@ const Configuration = () => {
 	>
 		<div className="popup__modal">
 			<form className="popup__cnt" onSubmit={handleSubmit}>
-				<p className='txt20x22 w700 mb40'>Enter the mail to which you want to send the report</p>
+				<p className='txt20x22 w700 mb40'>Enter the oligarch's details</p>
 				<InputWrap title={'Name'}>
 					<Input type={'text'} placeholder={'Name'} valueGet={value => { changeAddNewPerson('name', value) }} />
 				</InputWrap>

@@ -8,7 +8,7 @@ import BtnCircle from '../components/buttons/BtnCircle';
 import Loader from '../components/decorateElemetn/Loader';
 import { Icon } from '../components/Icon/Icon'
 import { Input, Selector } from '../components/inputs';
-import { requestItemReport, requestChangeState } from '../utils/scripts';
+import { requestItemReport, requestChangeState, requestSendReport, resultShow } from '../utils/scripts';
 
 const colectionTexts = {
 	country: 'Country: ',
@@ -32,9 +32,10 @@ const Report = () => {
 
 	const [valueInput, setValueInput] = useState('')
 
+	console.log(valueInput);
+
 	const sendReport = () => {
-		console.log('Send function does not exist')
-		console.log(`Emeil for send: ${reportInfo?.reportEmail}`);
+		requestSendReport(valueInput, item => resultShow(item, sendReport))
 	}
 
 	const handleSubmit = (event) => {
@@ -46,6 +47,10 @@ const Report = () => {
 	useEffect(() => {
 		requestItemReport(params.reportId, setReportInfo)
 	}, [])
+
+	useEffect(()=> {
+		setValueInput(reportInfo?.reportEmail)
+	}, [reportInfo?.reportEmail])
 
 	const imgBlock = !!(reportInfo?.photo) ? 
 		<Popup 
