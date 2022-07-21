@@ -23,8 +23,6 @@ export const URL_POST_SENT_REPORT = URL_GET_API + '/sendReport';
 export const URL_POST_SENT_REPORTS = URL_GET_API + '/sendReports';
 export const URL_POST_ADD_PERSON = URL_GET_API + '/addOligarch';
 
-export const ACCESS_TOKEN = 'c5b8d8a89bba4c5ad36217999f0419a2ba4d26f5066f9644d5923b23782f75ec';
-
 export const TYPE_FORM_COLECTION = {
 	institution: { title: 'Institution', placeholder: 'Institution'},
 	institution_address: { title: 'Institution Address', placeholder: 'Institution Address'},
