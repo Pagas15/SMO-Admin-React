@@ -9,17 +9,19 @@ import { getCookie, request, setCookie } from "./utils/scripts";
 
 
 const App = () => {
-  const [login, setLogin] = useState(false);
   
-  useEffect(() => {
-    request({
-      url: URL_GET_ADMIN,
-      callBack: (result) => {
-        !(Object.keys(result).length) && (window.location.href = URL_MAIN_LOGIN);
-        setLogin(result);
-      }
-    })
-  }, [])
+  let navigate = useNavigate();
+  let location = useLocation();
+  const [login, setLogin] = useState(false);
+  // customTest()
+
+
+  const redirect = () => {
+    (location.pathname === '/') && navigate('/admin-reports')
+  }
+
+  
+  useEffect(redirect, [location])
 
   return (<>
     <Header infoLogin={login} />
