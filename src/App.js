@@ -1,10 +1,10 @@
 import Header from "./components/Header";
 import Breadcrumbs from "./components/Breadcrumbs";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN, ADMIN_CONFIGURATION, ADMIN_REPORTS, URL_GET_ADMIN, URL_MAIN_LOGIN } from "./utils/consts";
+import { ADMIN_CONFIGURATION, ADMIN_REPORTS, URL_GET_ADMIN, URL_MAIN_LOGIN} from "./utils/consts";
 import { Configuration, Reports, Report } from './pages';
 import { useEffect, useState } from "react";
-import { getCookie, request, setCookie } from "./utils/scripts";
+import { getCookie, request } from "./utils/scripts";
 
 
 
@@ -22,6 +22,16 @@ const App = () => {
 
   
   useEffect(redirect, [location])
+
+  useEffect(() => {
+    request({
+      url: URL_GET_ADMIN,
+      callBack: (result) => {
+        ((result?.error == 'Access Denied') && (window.location.href = URL_MAIN_LOGIN))
+        setLogin(result);
+      }
+    })
+  }, [])
 
   return (<>
     <Header infoLogin={login} />
