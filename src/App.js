@@ -13,8 +13,7 @@ const App = () => {
   let navigate = useNavigate();
   let location = useLocation();
   const [login, setLogin] = useState(false);
-  // customTest()
-
+  
   const redirect = () => {
     (location.pathname === '/') && navigate('/admin-reports')
   }

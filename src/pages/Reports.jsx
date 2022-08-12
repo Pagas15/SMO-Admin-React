@@ -71,10 +71,10 @@ const Reports = () => {
 
 	const sendReport = () => {
 		const data = {assetsId: selectItems === 'all' ? 'all' : selectItems.join('|'), country: filterListSend.country };
-		requestSendReports(data,  item => resultShow(item, sendReport, () => {
+		requestSendReports(data,  item => resultShow({item, successfully: 'Report Sent', callBack: sendReport, addCallBack: () => {
 			sendListItems();
 			setSelectItems(null);
-		}));
+		}}));
 	}
 
 	return (

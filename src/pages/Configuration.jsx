@@ -76,16 +76,16 @@ const Configuration = () => {
 
 	const handleSubmitForm = (event) => {
 		event.preventDefault();
-		requestSaveInstitution(filterListSend, item => resultShow(item, handleSubmitForm))
+		requestSaveInstitution(filterListSend, item => resultShow({item, callBack: handleSubmitForm}))
 	}
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		requestAddPerson(addNewPerson, item => resultShow(item, handleSubmit, () => {
+		requestAddPerson(addNewPerson, item => resultShow({item, callBack: handleSubmit, addCallBack: () => {
 			setPopupOpen(!popupOpen);
 			setListOligarchs(false);
 			requersListOligarch();
-		}))
+		}}))
 	}
 
 	const [popupOpen, setPopupOpen] = useState(false);
