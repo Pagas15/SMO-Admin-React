@@ -15,7 +15,7 @@ const Input = ({placeholder, type, required = false, className, valueGet, baseTe
 			inputParam.type = 'tel' 
 			break;
 		case 'email':
-			inputParam.type = 'email' 
+			inputParam.type = 'text' 
 			break;
 		case 'image':
 			inputParam.type = 'file' 
