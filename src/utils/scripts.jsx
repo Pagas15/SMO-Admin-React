@@ -1,10 +1,41 @@
-import { ACCESS_TOKEN, URL_GET_ASSETS_BY_CATEGORY, URL_GET_ASSETS_COUNTRIES, URL_GET_ASSET_BY_ID, URL_GET_COUNTRIES, URL_GET_INSTITUTION_BY_COUNTRY, URL_GET_OLIGARCHS, URL_POST_ADD_PERSON, URL_POST_CHANGE_ASSET_STATUS, URL_POST_SAVE_INSTITUTION, URL_POST_SENT_REPORT, URL_POST_SENT_REPORTS } from "./consts";
+import { URL_GET_ASSETS_BY_CATEGORY, URL_GET_ASSETS_COUNTRIES, URL_GET_ASSET_BY_ID, URL_GET_COUNTRIES, URL_GET_INSTITUTION_BY_COUNTRY, URL_GET_OLIGARCHS, URL_POST_ADD_PERSON, URL_POST_CHANGE_ASSET_STATUS, URL_POST_SAVE_INSTITUTION, URL_POST_SENT_REPORT, URL_POST_SENT_REPORTS } from "./consts";
 
+
+export function getCookie(name) {
+  let matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+export function setCookie(name, value, options = {secure: true, 'max-age': 3600}) {
+
+  options = {
+    path: '/',
+    // при необходимости добавьте другие значения по умолчанию
+    ...options
+  };
+
+  if (options.expires instanceof Date) {
+    options.expires = options.expires.toUTCString();
+  }
+
+  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+  for (let optionKey in options) {
+    updatedCookie += "; " + optionKey;
+    let optionValue = options[optionKey];
+    if (optionValue !== true) {
+      updatedCookie += "=" + optionValue;
+    }
+  }
+
+  document.cookie = updatedCookie;
+}
 
 export async function request({url, method = 'GET', data = null, callBack}) {
   try {
     const headers = {
-      'Access-Token' : ACCESS_TOKEN
+      'Access-Token' : getCookie('token')
     };
     let body;
 
@@ -30,6 +61,7 @@ export async function request({url, method = 'GET', data = null, callBack}) {
     console.warn('Error: ', e.message)
   }
 }
+
 
 export const requestSaveInstitution = (data, callBack) => {
 	request({
@@ -74,22 +106,18 @@ export const requestChangeState = (id, status, callBack) => {
 		callBack
 	})
 }
-
-
 export const requestItemReport = (id, callBack) => {
 	request({
 		url: URL_GET_ASSET_BY_ID + `?id=${id}`,
 		callBack
 	})
 }
-
 export const requestListItems = ({category, country, filter, pageCount, callBack}) => {
   request({
     url: URL_GET_ASSETS_BY_CATEGORY + `?type=${category}&country=${country}&filter=${filter}&page=${(!!pageCount ) ? pageCount : 1 }`, 
     callBack
   })
 }
-
 export const requestGetAssetsCountries = (callBack) => {
   request({
     url: URL_GET_ASSETS_COUNTRIES, 
@@ -98,7 +126,6 @@ export const requestGetAssetsCountries = (callBack) => {
     }
   })
 }
-
 export const requestGetCountries = (callBack) => {
   request({
     url: URL_GET_COUNTRIES, 
@@ -107,21 +134,18 @@ export const requestGetCountries = (callBack) => {
     }
   })
 }
-
 export const requestGetByCountry = (id,callBack) => {
   request({
     url: URL_GET_INSTITUTION_BY_COUNTRY+ `?country_id=${id}`, 
     callBack
   })
 }
-
 export const requestGetOligarchs = (callBack, page) => {
   request({
     url: URL_GET_OLIGARCHS + `?page=${(!!page ) ? page : 1 }`,
     callBack
   })
 }
-
 export const resultShow = (item, callBack, addCallBack) => {
   const optionTrue = () => {
     alert('Changes saved'); 

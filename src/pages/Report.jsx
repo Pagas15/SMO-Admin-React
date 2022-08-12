@@ -33,7 +33,7 @@ const Report = () => {
 	const [valueInput, setValueInput] = useState('')
 
 	const sendReport = () => {
-		requestSendReport(valueInput, item => resultShow(item, sendReport))
+		requestSendReport({email: valueInput, assetId: params.reportId}, item => resultShow(item, sendReport))
 	}
 
 	const handleSubmit = (event) => {
