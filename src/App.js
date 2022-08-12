@@ -4,7 +4,7 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { ADMIN_CONFIGURATION, ADMIN_REPORTS, URL_GET_ADMIN, URL_MAIN_LOGIN} from "./utils/consts";
 import { Configuration, Reports, Report } from './pages';
 import { useEffect, useState } from "react";
-import { getCookie, request } from "./utils/scripts";
+import { getCookie, request, setCookie } from "./utils/scripts";
 
 
 
@@ -15,11 +15,9 @@ const App = () => {
   const [login, setLogin] = useState(false);
   // customTest()
 
-
   const redirect = () => {
     (location.pathname === '/') && navigate('/admin-reports')
   }
-
   
   useEffect(redirect, [location])
 

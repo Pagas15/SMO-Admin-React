@@ -7,7 +7,7 @@ export function getCookie(name) {
   ));
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
-export function setCookie(name, value, options = {}) {
+export function setCookie(name, value, options = {secure: true, 'max-age': 3600}) {
 
   options = {
     path: '/',

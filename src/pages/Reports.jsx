@@ -7,6 +7,7 @@ import TableInfo from '../components/table/TableInfo';
 import { requestGetAssetsCountries, requestListItems, requestSendReports, resultShow } from '../utils/scripts';
 
 const listCategory = {
+	'All': 'All',
 	'Bank Account': 'Bank Account',
 	'Real Estate': 'Real Estate',
 	'Company': 'Company',
@@ -20,7 +21,7 @@ const listCategory = {
 const Reports = () => {
 	const [filterListSend, setFilterListSend] = useState({
 		country: '',
-		category: 'Bank Account',
+		category: 'All',
 		filter: ''
 	})
 	const [selectItems, setSelectItems] = useState(null);
