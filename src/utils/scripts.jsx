@@ -1,4 +1,4 @@
-import { URL_GET_ASSETS_BY_CATEGORY, URL_GET_ASSETS_COUNTRIES, URL_GET_ASSET_BY_ID, URL_GET_COUNTRIES, URL_GET_INSTITUTION_BY_COUNTRY, URL_GET_OLIGARCHS, URL_POST_ADD_PERSON, URL_POST_CHANGE_ASSET_STATUS, URL_POST_SAVE_INSTITUTION, URL_POST_SENT_REPORT, URL_POST_SENT_REPORTS } from "./consts";
+import { URL_GET_ASSETS_BY_CATEGORY, URL_GET_ASSETS_COUNTRIES, URL_POST_REMUVE_PERSON, URL_GET_ASSET_BY_ID, URL_GET_COUNTRIES, URL_GET_INSTITUTION_BY_COUNTRY, URL_GET_OLIGARCHS, URL_POST_ADD_PERSON, URL_POST_CHANGE_ASSET_STATUS, URL_POST_SAVE_INSTITUTION, URL_POST_SENT_REPORT, URL_POST_SENT_REPORTS } from "./consts";
 
 
 export function getCookie(name) {
@@ -90,6 +90,14 @@ export const requestSendReports = (data, callBack) => {
 export const requestAddPerson = (data, callBack) => {
 	request({
 		url: URL_POST_ADD_PERSON,
+		method: 'POST',
+		data,
+		callBack
+	})
+}
+export const requestRemuvePerson = (data, callBack) => {
+	request({
+		url: URL_POST_REMUVE_PERSON,
 		method: 'POST',
 		data,
 		callBack

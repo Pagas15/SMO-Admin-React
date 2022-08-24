@@ -22,6 +22,7 @@ export const URL_POST_SAVE_INSTITUTION = URL_GET_API + '/saveInstitution';
 export const URL_POST_SENT_REPORT = URL_GET_API + '/sendReport';
 export const URL_POST_SENT_REPORTS = URL_GET_API + '/sendReports';
 export const URL_POST_ADD_PERSON = URL_GET_API + '/addOligarch';
+export const URL_POST_REMUVE_PERSON = URL_GET_API + '/deleteOligarchById';
 
 export const TYPE_FORM_COLECTION = {
 	institution: { title: 'Institution', placeholder: 'Institution'},
